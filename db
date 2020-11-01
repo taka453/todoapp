@@ -1,0 +1,5 @@
+INSERT INTO
+`todos` (`title`, `detail`, `status`, `created_at`, `updated_at`)
+VALUES
+('sutdy PHP.', 'todo list.', 0, now(), now()),
+('running.', '5km run.', 0, now(), now());
