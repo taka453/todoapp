@@ -1,7 +1,6 @@
 <?php
 
 // require_onceでDB接続情報を呼び出す
-require_once ("./../../model/Todo.php");
 require_once ("./../../controller/TodoController.php");
 
 // TodoクラスのfindByQueryメソッドを呼び出す。
@@ -23,12 +22,17 @@ $todo_list = $controller->index();
     <title>Document</title>
 </head>
 <body>
+    <h1>Todoアプリ</h1>
     <!-- データの条件分岐を記入 -->
     <?php if($todo_list): ?>
         <!-- foreachでループで取得する、fetchAllにより連想配列にて返されている -->
         <ul>
             <?php foreach($todo_list as $todo): ?>
-                <li><?php echo $todo["title"]; ?></li>
+                <!-- 詳細ページに遷移するためにaタグを実装 -->
+                <!-- パラメータを付与する事でデータを詳細ページされるようにする -->
+                <!-- 配列の$todoのidをパラメータを付与する -->
+                <!-- ?以降はパラメータとしてデータを付与する事ができる -->
+                <li><a href="./detail.php?todo_id=<?php echo $todo['id']; ?>"><?php echo $todo["title"]; ?></a></li>
             <?php endforeach; ?>
         </ul>
     <?php else: ?>

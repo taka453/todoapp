@@ -54,4 +54,28 @@ class Todo {
         //findAllからviewファイルに返す
         return $todo_list;
     }
+
+    //findByIdメソッドを作成し、$todo_idを付与
+    public static function findById($todo_id) {
+        $pdo = new PDO(DSN, USERNAME, PASSWORD);
+
+        //queryの引数にmysqlのコードを記入する
+        //文字列置換をするためにsprintfを使う
+        //todosテーブルからqueryの引数から渡ってきたtodo_idに該当するレコードを取得する
+        $stmh = $pdo->query(sprintf("select * from todos where id = %s;", $todo_id));
+
+        // 失敗した場合の処理として、queryの情報が間違っていれば、空の配列がかえる
+        if($stmh) {
+            //fetchallはすべての結果を配列で返す。
+            //FECH_ASSOCは定数。結果を連想配列で返す指定をしている。
+            $todo = $stmh->fetch(PDO::FETCH_ASSOC);
+            //prepareで準備して、executeで実行する。
+            // $stmh = $pdo->prepare("select * from todos");
+            // $stmh->execute();
+        } else {
+            $todo = array();
+        }
+        //findAllからviewファイルに返す
+        return $todo;
+    }
 }
