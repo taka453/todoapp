@@ -2,10 +2,16 @@
 
 // require_onceでDB接続情報を呼び出す
 require_once ("./../../model/Todo.php");
+require_once ("./../../controller/TodoController.php");
 
 // TodoクラスのfindByQueryメソッドを呼び出す。
 // findByQueryの引数がqueryとなり、引数に書かれたものがmodelのTodoクラスにわたす
-$todo_list = Todo::findAll();
+// $todo_list = Todo::findAll();
+
+//controllerを呼ぶ出す記述に変更
+//インスタンス生成するためにnewキーワードを指定する、よってオブジェクトが常に生成される。
+$controller = new TodoController();
+$todo_list = $controller->index();
 
 ?>
 
