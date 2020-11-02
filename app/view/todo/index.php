@@ -4,7 +4,8 @@
 require_once ("./../../model/Todo.php");
 
 // TodoクラスのfindByQueryメソッドを呼び出す。
-$todo_list = Todo::findByQuery("select * from todos");
+// findByQueryの引数がqueryとなり、引数に書かれたものがmodelのTodoクラスにわたす
+$todo_list = Todo::findAll();
 
 ?>
 
