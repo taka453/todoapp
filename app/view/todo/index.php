@@ -33,7 +33,7 @@ $todo_list = $controller->index();
                 <!-- パラメータを付与する事でデータを詳細ページされるようにする -->
                 <!-- 配列の$todoのidをパラメータを付与する -->
                 <!-- ?以降はパラメータとしてデータを付与する事ができる -->
-                <li><a href="./detail.php?todo_id=<?php echo $todo['id']; ?>"><?php echo $todo["title"]; ?></a></li>
+                <li><a href="./detail.php?todo_id=<?php echo $todo['id']; ?>"><?php echo $todo['title']; ?></a></li>
             <?php endforeach; ?>
         </ul>
     <?php else: ?>

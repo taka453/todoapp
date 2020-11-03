@@ -9,6 +9,26 @@
         $controller->new();
         exit;
     }
+
+    //GETメソッドがきていれば、条件式にて情報が渡ってきていれば、変数title,detailに情報を格納する。
+    //もしif文が通らなければ、ifの外で変数がないとundefinedになってしまうので、変数は取得する。
+    $title = '';
+    $detail = '';
+    if($_SERVER['REQUEST_METHOD'] === 'GET') {
+        if(isset($_GET['title'])) {
+            $title = $_GET['title'];
+        }
+        if(isset($_GET['detail'])) {
+            $detail = $_GET['detail'];
+        }
+    }
+
+    session_start();
+    // コントローラで保持しているエラーメッセージを格納
+    $error_msgs = $_SESSION['error_msgs'];
+    //  格納が済めばセッションを削除する
+    unset($_SESSION['error_msgs']);
+
 ?>
 
 <!DOCTYPE html>
@@ -20,19 +40,32 @@
 </head>
 <body>
     <div>
-        // nameに書かれたtitle,detailはcontrollerにて取得される
+        <!-- nameに書かれたtitle,detailはcontrollerにて取得される -->
         <h1>新規作成</h1>
         <form action="./new.php" method="post">
             <div>
                 <p>タイトル</p>
-                <input name="title" type="text">
+                <!-- 取得したgetパラメータより取得したtitleをvalue値にてphpを入力する -->
+                <input name="title" type="text" value="<?php echo $title; ?>">
             </div>
             <div>
                 <p>詳細</p>
-                <textarea name="detail"></textarea>
+                <!-- 取得したgetパラメータより取得したdetailをvalue値にてphpを入力する -->
+                <textarea name="detail"><?php echo $detail; ?></textarea>
             </div>
             <button type="submit">登録</button>
         </form>
+        <!-- エラーメッセージがあれば表示させるという条件式 -->
+        <?php if($error_msgs): ?>
+            <div>
+                <ul>
+                    <!-- エラーメッセージを取得し、表示するためにforeachで繰り返し処理を行う -->
+                    <?php foreach($error_msgs as $error_msg):?>
+                        <li><?php echo $error_msg; ?></li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+        <?php endif; ?>
     </div>
 </body>
 </html>

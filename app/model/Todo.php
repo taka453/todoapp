@@ -146,7 +146,9 @@ class Todo {
 
         //PDOクラスで記入,コンストラクタに対して$dsn,$user,$password情報を渡す
         $pdo = new PDO(DSN, USERNAME, PASSWORD);
-        //queryメソッドにて
+        //queryメソッドにてデータベースに情報を渡す
         $result = $pdo->query($query);
+
+        return $result;
     }
 }
