@@ -16,6 +16,41 @@ class Todo {
     // 完了の定数
     const STATUS_COMPLETED_TXT = "完了";
 
+    // publicでプロパティ宣言
+    public $title;
+    public $detail;
+    public $status;
+
+    // プロパティに対して、titleメソッド、titleを返す
+    public function getTitle() {
+        return $this->title;
+    }
+
+    // titleをセットするようメソッド
+    public function setTitle($title) {
+        $this->title = $title;
+    }
+
+    // プロパティに対して、getメソッド、detailを返す
+    public function getDetail() {
+        return $this->detail;
+    }
+
+    // detailをセットするようメソッド
+    public function setDetail($detail) {
+        $this->detail = $detail;
+    }
+
+    // プロパティに対して、statusメソッド、statusを返す
+    public function getStatus() {
+        return $this->status;
+    }
+
+    // statusをセットするようメソッド
+    public function setStatus($status) {
+        $this->status = $status;
+    }
+
     public static function findByQuery($query) {
         //PDOクラスで記入,コンストラクタに対して$dsn,$user,$password情報を渡す
         $pdo = new PDO(DSN, USERNAME, PASSWORD);
@@ -97,5 +132,21 @@ class Todo {
         } else if($status == self::STATUS_COMPLETED){
             return self::STATUS_COMPLETED_TXT;
         }
+        return "";
+    }
+
+    public function save() {
+        // 保存処理を入力する。
+        // 文字列置換するために%sで記入。statusはデフォルトが未完成のため0を保存する
+        $query = sprintf("INSERT INTO `todos` (`title`, `detail`, `status`, `created_at`, `updated_at`)
+        VALUES ('%s', '%s', 0, NOW(), NOW())",
+            $this->title,
+            $this->detail
+        );
+
+        //PDOクラスで記入,コンストラクタに対して$dsn,$user,$password情報を渡す
+        $pdo = new PDO(DSN, USERNAME, PASSWORD);
+        //queryメソッドにて
+        $result = $pdo->query($query);
     }
 }

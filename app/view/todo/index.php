@@ -23,6 +23,7 @@ $todo_list = $controller->index();
 </head>
 <body>
     <h1>Todoアプリ</h1>
+    <div><a href="./new.php">新規作成</a></div>
     <!-- データの条件分岐を記入 -->
     <?php if($todo_list): ?>
         <!-- foreachでループで取得する、fetchAllにより連想配列にて返されている -->

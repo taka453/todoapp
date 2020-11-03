@@ -26,4 +26,19 @@ class TodoController {
         $todo['display_status'] = Todo::getDisplayStatus($todo_list['status']);
         return $todo;
     }
+
+    public function new() {
+        // new.phpのフォームのnameにて指定されたtitle,detailを取得する必要がある
+        $title = $_POST['title'];
+        $detail = $_POST['detail'];
+
+        // まずはnewメソッドにてインタンス化をする。
+        $todo = new Todo;
+        // 後々使うために関数を準備
+        $todo->setTitle($title);
+        $todo->setDetail($detail);
+        // 追加を更新するためsaveメソッドを使う
+        // modelsのqueryメソッドに送る
+        $todo->save();
+    }
 }
