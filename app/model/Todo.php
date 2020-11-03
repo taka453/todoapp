@@ -4,6 +4,18 @@
 require_once ("./../../config/db.php");
 
 class Todo {
+    // 定数を作成
+    // 未完了の定数
+    const STATUS_INCOMPLETE = 0;
+    // 完了の定数
+    const STATUS_COMPLETED = 1;
+
+    // 表示するための定数
+    // 未完了の定数
+    const STATUS_INCOMPLETE_TXT = "未完了";
+    // 完了の定数
+    const STATUS_COMPLETED_TXT = "完了";
+
     public static function findByQuery($query) {
         //PDOクラスで記入,コンストラクタに対して$dsn,$user,$password情報を渡す
         $pdo = new PDO(DSN, USERNAME, PASSWORD);
@@ -66,7 +78,7 @@ class Todo {
 
         // 失敗した場合の処理として、queryの情報が間違っていれば、空の配列がかえる
         if($stmh) {
-            //fetchallはすべての結果を配列で返す。
+            //fetchは結果セットの1行を返す。
             //FECH_ASSOCは定数。結果を連想配列で返す指定をしている。
             $todo = $stmh->fetch(PDO::FETCH_ASSOC);
             //prepareで準備して、executeで実行する。
@@ -77,5 +89,13 @@ class Todo {
         }
         //findAllからviewファイルに返す
         return $todo;
+    }
+
+    public static function getDisplayStatus($status) {
+        if($status == self::STATUS_INCOMPLETE) {
+            return self::STATUS_INCOMPLETE_TXT;
+        } else if($status == self::STATUS_COMPLETED){
+            return self::STATUS_COMPLETED_TXT;
+        }
     }
 }

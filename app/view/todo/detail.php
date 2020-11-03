@@ -26,6 +26,10 @@ $todo = $controller->detail();
         <p><?php echo $todo['detail']; ?></p>
     </div>
     <div>
+        <p>ステータス</p>
+        <p><?php echo $todo['display_status']; ?></p>
+    </div>
+    <div>
         <a href="./index.php">戻る</a>
     </div>
 </body>
