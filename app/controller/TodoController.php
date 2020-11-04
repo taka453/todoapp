@@ -73,7 +73,7 @@ class TodoController {
 
         if($result === false) {
             //getパラメータにtitle,detail情報を取得する?以降のものがパラメータとして取得できる
-            $params = sprintf("?title=%s&detail=%s", $title, $detail);
+            $params = sprintf("?title=%s&detail=%s", $valid_data['title'], $valid_data['detail']);
             header(sprintf("Location: ./new.php%s", $params));
             return;
         }

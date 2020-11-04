@@ -136,19 +136,33 @@ class Todo {
     }
 
     public function save() {
-        // 保存処理を入力する。
-        // 文字列置換するために%sで記入。statusはデフォルトが未完成のため0を保存する
-        $query = sprintf("INSERT INTO `todos` (`title`, `detail`, `status`, `created_at`, `updated_at`)
-        VALUES ('%s', '%s', 0, NOW(), NOW())",
-            $this->title,
-            $this->detail
-        );
-
-        //PDOクラスで記入,コンストラクタに対して$dsn,$user,$password情報を渡す
-        $pdo = new PDO(DSN, USERNAME, PASSWORD);
-        //queryメソッドにてデータベースに情報を渡す
-        $result = $pdo->query($query);
+        // insert時にエラーが発生した時にエラー画面が表示しないようにする
+        try {
+            throw new Exception("エラー!!!!!!!!!!!!!!!!!!!!!");
+             // 保存処理を入力する。
+            // 文字列置換するために%sで記入。statusはデフォルトが未完成のため0を保存する
+            $query = sprintf("INSERT INTO `todos` (`title`, `detail`, `status`, `created_at`, `updated_at`)
+            VALUES ('%s', '%s', 0, NOW(), NOW())",
+                $this->title,
+                $this->detail
+            );
+            //PDOクラスで記入,コンストラクタに対して$dsn,$user,$password情報を渡す
+            $pdo = new PDO(DSN, USERNAME, PASSWORD);
+            //queryメソッドにてデータベースに情報を渡す
+            $result = $pdo->query($query);
+            //エラーが発生するとエラーをキャッチする。
+        } catch(Exception $e) {
+            // エラーメッセージを表示させる
+            error_log("新規作成に失敗しました。");
+            // エラーのログを残す。getMessageを取得する事でエラーメッセージを取得する
+            error_log($e->getMessage());
+            // スタックトレース（エラーメッセージ）を文字列で取得できる
+            error_log($e->getTraceAsString());
+            // returnをfalseでかえす。
+            return false;
+        }
 
         return $result;
+
     }
 }
