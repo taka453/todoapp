@@ -30,6 +30,10 @@ $todo = $controller->detail();
         <p><?php echo $todo['display_status']; ?></p>
     </div>
     <div>
+        <!-- 編集するTODOのIDを識別するために、getパラメータを作成する必要がる -->
+        <button><a href="./edit.php?todo_id=<?php echo $todo['id'] ?>">編集</a></button>
+    </div>
+    <div>
         <a href="./index.php">戻る</a>
     </div>
 </body>

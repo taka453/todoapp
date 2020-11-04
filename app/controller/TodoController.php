@@ -21,7 +21,7 @@ class TodoController {
     public function detail() {
         // パラメータからgetパラメータであるtodo_idを取得する
         $todo_id = $_GET['todo_id'];
-        //findByIdメソッドを新しく追加し、$todo_idをパラメータを引数にいれる渡す
+        //findByIdメソッドを新しく追加し、$todo_idをパラメータを引数にいれて渡す
         $todo = Todo::findById($todo_id);
         //display_statusという新しくキーを作成し、TodoクラスgetDisplayメソッドを通して、画面表示用のステータスを取得する
         $todo['display_status'] = Todo::getDisplayStatus($todo_list['status']);
