@@ -39,7 +39,7 @@ unset($_SESSION['error_msgs']);
                 <!-- パラメータを付与する事でデータを詳細ページされるようにする -->
                 <!-- 配列の$todoのidをパラメータを付与する -->
                 <!-- ?以降はパラメータとしてデータを付与する事ができる -->
-                <li><a href="./detail.php?todo_id=<?php echo $todo['id']; ?>"><?php echo $todo['title']; ?></a></li>
+                <li><a href="./detail.php?todo_id=<?php echo $todo['id']; ?>"><?php echo $todo['title']; ?></a><button class="delete-btn">削除</button></li>
             <?php endforeach; ?>
         </ul>
     <?php else: ?>
@@ -56,6 +56,32 @@ unset($_SESSION['error_msgs']);
             </ul>
         </div>
     <?php endif; ?>
+    <script src="./../../public/js/jquery-3.5.1.min.js"></script>
+    <script>
+        $(".delete-btn").click(function() {
+            // オブジェクトを宣言
+            let data = {};
+            data.todo_id = 1;
+
+            $.ajax({
+                url: './delete.php',
+                type: 'post',
+                // オブジェクトを取得しているデータプロジェクトを宣言
+                data: data
+            }).then(
+                //通信に成功した場合のファンクション
+                function(data) {
+                    let json = JSON.parse(data);
+                    console.log("success", json.todo_id);
+                },
+                //通信に失敗した場合のファンクション
+                function() {
+                    console.log('fail');
+                    alert("fail");
+                }
+            );
+        });
+    </script>
 </body>
 </html>
 

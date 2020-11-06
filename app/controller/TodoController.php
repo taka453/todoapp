@@ -15,6 +15,12 @@ class TodoController {
         //Todoクラスを呼び出して、findAllメソッドを呼び出し。
         $todo_list = Todo::findAll();
         return $todo_list;
+
+        //findByIdメソッドを新しく追加し、$todo_idをパラメータを引数にいれて渡す
+        $todo = Todo::findById($todo_id);
+        //display_statusという新しくキーを作成し、TodoクラスgetDisplayメソッドを通して、画面表示用のステータスを取得する
+        $todo['display_status'] = Todo::getDisplayStatus($todo_list['status']);
+        return $todo;
     }
 
     // detail(詳細)のメソッド作成
@@ -190,6 +196,7 @@ class TodoController {
             // パラメータ(get)に入力した値を持たせて、再度new.phpに再遷移
             $params = sprintf("?todo_id=%s&title=%s&detail=%s",$_POST['todo_id'], $_POST['title'], $_POST['detail']);
             header(sprintf("Location: ./edit.php%s", $params));
+            return;
         }
 
         // $validationクラスをインスタンス化する事でバリデーションのデータを取得
