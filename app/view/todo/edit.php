@@ -5,30 +5,26 @@
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
         //オブジェクトで送られてくるので、インスタンス化する。
         $controller = new TodoController();
-        //controllerのnewメソッドを出力する
-        $controller->new();
+        //controllerのeditメソッドを呼ぶ
+        $controller->update();
         exit;
     }
 
-    //GETメソッドがきていれば、条件式にて情報が渡ってきていれば、変数title,detailに情報を格納する。
-    //もしif文が通らなければ、ifの外で変数がないとundefinedになってしまうので、変数は取得する。
-    $title = '';
-    $detail = '';
-    if($_SERVER['REQUEST_METHOD'] === 'GET') {
-        if(isset($_GET['title'])) {
-            $title = $_GET['title'];
-        }
-        if(isset($_GET['detail'])) {
-            $detail = $_GET['detail'];
-        }
-    }
+    //GETメソッドがきていれば、条件式にて情報が渡ってきていれば、変数title,detail,todo_idに情報を格納する。
+    //todo_idは更新の際に取得が必要になる。
+    //もしif文が通らなければ、ifの外で変数がないとundefinedになってしまうので、空を変数に格納する。
+    $controller = new TodoController();
+    //controllerのeditメソッドを呼ぶ
+    $data = $controller->edit();
+
+    $todo = $data['todo'];
+    $params = $data['params'];
 
     session_start();
     // コントローラで保持しているエラーメッセージを格納
     $error_msgs = $_SESSION['error_msgs'];
     //  格納が済めばセッションを削除する
     unset($_SESSION['error_msgs']);
-
 ?>
 
 <!DOCTYPE html>
@@ -42,18 +38,21 @@
     <div>
         <!-- nameに書かれたtitle,detailはcontrollerにて取得される -->
         <h1>編集</h1>
-        <form action="./new.php" method="post">
+        <form action="./edit.php" method="post">
             <div>
                 <p>タイトル</p>
                 <!-- 取得したgetパラメータより取得したtitleをvalue値にてphpを入力する -->
-                <input name="title" type="text" value="<?php echo $title; ?>">
+                <!-- パラメータにタイトルがあればパラメータのタイトルが表示され、なければ保存されているデータを表示する -->
+                <input name="title" type="text" value="<?php if(isset($params['title'])): ?><?php echo $params['title']; ?><?php else: ?><?php echo $todo['title']; ?><?php endif; ?>">
             </div>
             <div>
                 <p>詳細</p>
                 <!-- 取得したgetパラメータより取得したdetailをvalue値にてphpを入力する -->
-                <textarea name="detail"><?php echo $detail; ?></textarea>
+                <textarea name="detail"><?php if(isset($params['detail'])): ?><?php echo $params['detail']; ?><?php else: ?><?php echo $todo['detail']; ?><?php endif; ?></textarea>
             </div>
-            <button type="submit">登録</button>
+            <!-- todo_idをinputのhiddenで渡し、情報を保持する。 -->
+            <input type="hidden" name="todo_id" value="<?php echo $todo['id']; ?>">
+            <button type="submit">更新</button>
         </form>
         <!-- エラーメッセージがあれば表示させるという条件式 -->
         <?php if($error_msgs): ?>

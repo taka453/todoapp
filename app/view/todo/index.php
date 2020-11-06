@@ -12,6 +12,12 @@ require_once ("./../../controller/TodoController.php");
 $controller = new TodoController();
 $todo_list = $controller->index();
 
+session_start();
+// コントローラで保持しているエラーメッセージを格納
+$error_msgs = $_SESSION['error_msgs'];
+//  格納が済めばセッションを削除する
+unset($_SESSION['error_msgs']);
+
 ?>
 
 <!DOCTYPE html>
@@ -38,6 +44,17 @@ $todo_list = $controller->index();
         </ul>
     <?php else: ?>
         <p>データなし</p>
+    <?php endif; ?>
+    <!-- エラーメッセージがあれば表示させるという条件式 -->
+    <?php if($error_msgs): ?>
+        <div>
+            <ul>
+                <!-- エラーメッセージを取得し、表示するためにforeachで繰り返し処理を行う -->
+                <?php foreach($error_msgs as $error_msg):?>
+                    <li><?php echo $error_msg; ?></li>
+                <?php endforeach; ?>
+            </ul>
+        </div>
     <?php endif; ?>
 </body>
 </html>
