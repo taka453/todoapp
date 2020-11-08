@@ -225,4 +225,26 @@ class TodoController {
         // 保存が成功し、返り値が戻ってきたら、new.phpからindex.phpに遷移するようにする
         header("Location: ./index.php");
     }
+
+    public function delete()
+    {
+        $todo_id = $_POST['todo_id'];
+        if(!$todo_id) {
+            error_log(sprintf("[TodoController][delete]todo_id is not found. todo_id: %s", $todo_id));
+            return false;
+        }
+
+        //レコードチェック、レコードがなければfalse
+        if(Todo::isExistById($todo_id) === false) {
+            error_log(sprintf("[TodoController][delete]record is not found. todo_id: %s", $todo_id));
+            return false;
+        }
+
+        // 削除の処理を実行する
+        $todo = new Todo;
+        $todo->setId($todo_id);
+        $result = $todo->delete();
+
+        return $result;
+    }
 }

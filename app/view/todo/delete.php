@@ -1,11 +1,19 @@
 <?php
+require_once('./../../controller/TodoController.php');
 
-// todo_idを取得
-$todo_id = $_POST['todo_id'];
-// 配列の準備
+//controllerクラスをインスタンス化
+$controller = new TodoController;
+//コントロールクラスのdelteメソッドを実行
+$result= $controller->delete();
+//配列準備
 $response = array();
-// todo_id配列を追加
-$response['todo_id'] = $todo_id;
+
+if($result) {
+    $response['result']= 'success';
+} else {
+    $response['result'] = 'fail';
+}
+
 // 配列は文字列にはできないので、json_encodeにて文字列化を行う。
 echo json_encode($response);
 

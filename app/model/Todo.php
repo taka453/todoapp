@@ -238,4 +238,37 @@ class Todo {
         }
         return false;
     }
+
+    public function delete() {
+        // insert時にエラーが発生した時にエラー画面が表示しないようにする
+        try {
+            // 更新処理を入力する。
+            // 文字列置換するために%sで記入。
+            // deleteは値を指定する際は''で囲む。
+            // where句でidを指定しないと全体が更新されてしまうので注意
+            $query = sprintf("DELETE FROM todos WHERE id = %s",
+                $this->id
+            );
+
+            error_log($query);
+            //PDOクラスで記入,コンストラクタに対して$dsn,$user,$password情報を渡す
+            $pdo = new PDO(DSN, USERNAME, PASSWORD);
+            $pdo->beginTransaction();
+            //queryメソッドにてデータベースに情報を渡す
+            $result = $pdo->query($query);
+            //エラーが発生するとエラーをキャッチする。
+            $pdo->commit();
+        } catch(Exception $e) {
+            // エラーメッセージを表示させる
+            error_log("削除に失敗しました。");
+            // エラーのログを残す。getMessageを取得する事でエラーメッセージを取得する
+            error_log($e->getMessage());
+            // スタックトレース（エラーメッセージ）を文字列で取得できる
+            error_log($e->getTraceAsString());
+            $pdo->rollBack();
+            // returnをfalseでかえす。
+            return false;
+        }
+        return $result;
+    }
 }
