@@ -59,6 +59,10 @@ unset($_SESSION['error_msgs']);
     <script src="./../../public/js/jquery-3.5.1.min.js"></script>
     <script>
         $(".delete-btn").click(function() {
+            //二度押しを防止する
+            //チェック状態を調べる
+            $(".delete-btn").prop("disabled", true);
+            return;
             //クリックした要素を取得するthis
             //データのキーであるidを記入
             let todo_id = $(this).data('id');
