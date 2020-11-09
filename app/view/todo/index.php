@@ -59,42 +59,44 @@ unset($_SESSION['error_msgs']);
     <script src="./../../public/js/jquery-3.5.1.min.js"></script>
     <script>
         $(".delete-btn").click(function() {
-            //二度押しを防止する
-            //チェック状態を調べる
-            $(".delete-btn").prop("disabled", true);
             //クリックした要素を取得するthis
             //データのキーであるidを記入
             let todo_id = $(this).data('id');
-            // オブジェクトを宣言
-            let data = {};
-            data.todo_id = todo_id;
-            $.ajax({
-                url: './delete.php',
-                type: 'post',
-                // オブジェクトを取得しているデータプロジェクトを宣言
-                data: data
-            }).then(
-                //通信に成功した場合のファンクション
-                function(data) {
-                    let json = JSON.parse(data);
-                    console.log("success", json);
-                    if(json.result == 'success') {
-                        // 通信が達成していれば一覧画面に遷移
-                        windows.location.href = "./index.php";
-                    } else {
-                        console.log("failed to delete.");
-                        alert("failed to delete.");
-                        // 非達成であればfalse
+            if(confirm("削除しますがよろしいですが？ id:" + todo_id)){
+                //二度押しを防止する
+                //チェック状態を調べる
+                $(".delete-btn").prop("disabled", true);
+                // オブジェクトを宣言
+                let data = {};
+                data.todo_id = todo_id;
+                $.ajax({
+                    url: './delete.php',
+                    type: 'post',
+                    // オブジェクトを取得しているデータプロジェクトを宣言
+                    data: data
+                }).then(
+                    //通信に成功した場合のファンクション
+                    function(data) {
+                        let json = JSON.parse(data);
+                        console.log("success", json);
+                        if(json.result == 'success') {
+                            // 通信が達成していれば一覧画面に遷移
+                            window.location.href = "./index.php";
+                        } else {
+                            console.log("failed to delete.");
+                            alert("failed to delete.");
+                            // 非達成であればfalse
+                            $(".delete-btn").prop("disabled", false);
+                        }
+                    },
+                    //通信に失敗した場合のファンクション
+                    function() {
+                        console.log('fail');
+                        alert("fail");
                         $(".delete-btn").prop("disabled", false);
                     }
-                },
-                //通信に失敗した場合のファンクション
-                function() {
-                    console.log('fail');
-                    alert("fail");
-                    $(".delete-btn").prop("disabled", false);
-                }
-            );
+                );
+            }
         });
     </script>
 </body>
